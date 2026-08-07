@@ -1,0 +1,44 @@
+{
+    "configurations": [
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:Shot}",
+            "name": "Debug Shot",
+            "target": "Shot",
+            "configuration": "debug",
+            "preLaunchTask": "swift: Build Debug Shot"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:Shot}",
+            "name": "Release Shot",
+            "target": "Shot",
+            "configuration": "release",
+            "preLaunchTask": "swift: Build Release Shot"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:Shot}",
+            "name": "Debug A-Shot",
+            "target": "A-Shot",
+            "configuration": "debug",
+            "preLaunchTask": "swift: Build Debug A-Shot"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:Shot}",
+            "name": "Release A-Shot",
+            "target": "A-Shot",
+            "configuration": "release",
+            "preLaunchTask": "swift: Build Release A-Shot"
+        }
+    ]
+}

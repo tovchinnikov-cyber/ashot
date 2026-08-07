@@ -1,0 +1,6 @@
+.DS_Store
+.build/
+.swiftpm/
+A-Shot.app/
+A-Shot-*.dmg
+.dmg-staging/

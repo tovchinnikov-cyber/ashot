@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A-Shot — нативная скриншотилка для Mac</title>
+<meta name="description" content="Бесплатная нативная скриншотилка для macOS на Apple Silicon. Быстрая, без Electron, без телеметрии.">
+<style>
+  :root {
+    --bg: #f5f5f7;
+    --bg-elevated: #ffffff;
+    --text: #1d1d1f;
+    --text-secondary: #6e6e73;
+    --border: #d2d2d7;
+    --accent: #0071e3;
+    --accent-text: #ffffff;
+    --code-bg: #eceef1;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.06);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0b0c0e;
+      --bg-elevated: #17181b;
+      --text: #f2f2f3;
+      --text-secondary: #9a9aa0;
+      --border: #2c2d31;
+      --accent: #2a93ff;
+      --accent-text: #ffffff;
+      --code-bg: #1f2023;
+      --shadow: 0 1px 3px rgba(0,0,0,0.4), 0 8px 24px rgba(0,0,0,0.35);
+    }
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.55;
+  }
+
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  header.hero {
+    padding: 96px 0 64px;
+    text-align: center;
+  }
+
+  .icon {
+    font-size: 56px;
+    line-height: 1;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 12px;
+  }
+
+  .tagline {
+    font-size: clamp(1.05rem, 2.5vw, 1.3rem);
+    color: var(--text-secondary);
+    max-width: 560px;
+    margin: 0 auto 36px;
+  }
+
+  .cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    border-radius: 980px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+  }
+
+  .btn:active { transform: scale(0.97); }
+
+  .btn-primary {
+    background: var(--accent);
+    color: var(--accent-text);
+  }
+
+  .btn-primary:hover { opacity: 0.88; }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+
+  .btn-secondary:hover { background: var(--bg-elevated); }
+
+  .meta-note {
+    margin-top: 18px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+  }
+
+  section {
+    padding: 48px 0;
+  }
+
+  .section-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 0 0 28px;
+    text-align: center;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+
+  .card {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 22px;
+    box-shadow: var(--shadow);
+  }
+
+  .card .emoji {
+    font-size: 26px;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .card h3 {
+    font-size: 1.02rem;
+    margin: 0 0 6px;
+  }
+
+  .card p {
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  .steps {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 8px 28px;
+    box-shadow: var(--shadow);
+  }
+
+  .steps ol {
+    margin: 0;
+    padding: 20px 0 20px 20px;
+  }
+
+  .steps li {
+    margin-bottom: 14px;
+    padding-left: 4px;
+  }
+
+  .steps li:last-child { margin-bottom: 0; }
+
+  code {
+    background: var(--code-bg);
+    border-radius: 6px;
+    padding: 2px 6px;
+    font-size: 0.9em;
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+  }
+
+  footer {
+    padding: 48px 0 80px;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.88rem;
+  }
+
+  footer a {
+    color: var(--text-secondary);
+    text-decoration: underline;
+  }
+</style>
+</head>
+<body>
+
+  <header class="hero">
+    <div class="wrap">
+      <div class="icon">📸</div>
+      <h1>A-Shot</h1>
+      <p class="tagline">Нативная скриншотилка для Mac на Apple Silicon. Быстро, бесплатно, без Electron и без слежки.</p>
+      <div class="cta-row">
+        <!-- TODO: замените OWNER/REPO на свой GitHub owner/repo после публикации -->
+        <a class="btn btn-primary" href="https://github.com/OWNER/REPO/releases/latest">⬇ Скачать A-Shot.dmg</a>
+        <a class="btn btn-secondary" href="https://github.com/OWNER/REPO">Исходники на GitHub</a>
+      </div>
+      <p class="meta-note">macOS 15+ · Apple Silicon · MIT license</p>
+    </div>
+  </header>
+
+  <section>
+    <div class="wrap">
+      <h2 class="section-title">Почему A-Shot</h2>
+      <div class="grid">
+        <div class="card">
+          <span class="emoji">⚡️</span>
+          <h3>Мгновенный запуск</h3>
+          <p>Swift + AppKit + ScreenCaptureKit — никакого Electron и фризов при захвате.</p>
+        </div>
+        <div class="card">
+          <span class="emoji">⌨️</span>
+          <h3>Глобальный хоткей</h3>
+          <p>Работает даже когда в фокусе другое приложение — включая звонки в Zoom и Teams.</p>
+        </div>
+        <div class="card">
+          <span class="emoji">🖊️</span>
+          <h3>Аннотации</h3>
+          <p>Стрелки, прямоугольники и текст прямо на скриншоте перед копированием.</p>
+        </div>
+        <div class="card">
+          <span class="emoji">🖥️</span>
+          <h3>Мультимонитор</h3>
+          <p>Выделяй область на любом из подключённых экранов.</p>
+        </div>
+        <div class="card">
+          <span class="emoji">📋</span>
+          <h3>Прямо в буфер</h3>
+          <p>Один клик или ⌘C — и скриншот уже готов для вставки в чат.</p>
+        </div>
+        <div class="card">
+          <span class="emoji">🔒</span>
+          <h3>Приватность</h3>
+          <p>Без телеметрии, без аккаунта, без рекламы. Открытый исходный код.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2 class="section-title">Установка</h2>
+      <div class="steps">
+        <ol>
+          <li>Скачайте <code>A-Shot.dmg</code> и перетащите <code>A-Shot.app</code> в <code>Applications</code></li>
+          <li>При первом запуске macOS покажет предупреждение Gatekeeper — это нормально: приложение подписано без платного Apple Developer ID. Откройте <b>System Settings → Privacy &amp; Security → Security</b> и нажмите <b>Open Anyway</b> рядом с A-Shot</li>
+          <li>Разрешите доступ <b>Accessibility</b> и <b>Screen Recording</b>, когда macOS спросит — без них хоткей и захват экрана не работают</li>
+          <li>Готово — жмите <code>⌘⇧S</code> (или свой хоткей из настроек) и выделяйте область</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <p>MIT License · <a href="https://github.com/OWNER/REPO">github.com/OWNER/REPO</a></p>
+    </div>
+  </footer>
+
+</body>
+</html>
