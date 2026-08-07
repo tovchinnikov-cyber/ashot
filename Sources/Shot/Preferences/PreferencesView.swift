@@ -1,4 +1,5 @@
 import SwiftUI
+import AppKit
 import ServiceManagement
 
 struct PreferencesView: View {
@@ -6,6 +7,7 @@ struct PreferencesView: View {
 
     @State private var keyCombo: KeyCombo = KeyCombo.load() ?? .default
     @State private var launchAtLogin = false
+    @State private var isHotkeyActive = false
 
     var body: some View {
         Form {
@@ -26,6 +28,21 @@ struct PreferencesView: View {
                         newValue.save()
                         hotkeyManager.register(newValue)
                     }
+
+                if !isHotkeyActive {
+                    HStack(spacing: 6) {
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .foregroundStyle(.orange)
+                        Text("Hotkey inactive — needs Accessibility access")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                        Spacer()
+                        Button("Open Settings") {
+                            openAccessibilitySettings()
+                        }
+                        .font(.caption)
+                    }
+                }
             }
 
             Section("General") {
@@ -40,6 +57,16 @@ struct PreferencesView: View {
         .frame(width: 400)
         .onAppear {
             launchAtLogin = SMAppService.mainApp.status == .enabled
+            isHotkeyActive = hotkeyManager.isActive
+        }
+        .onReceive(Timer.publish(every: 1, on: .main, in: .common).autoconnect()) { _ in
+            isHotkeyActive = hotkeyManager.isActive
+        }
+    }
+
+    private func openAccessibilitySettings() {
+        if let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility") {
+            NSWorkspace.shared.open(url)
         }
     }
 

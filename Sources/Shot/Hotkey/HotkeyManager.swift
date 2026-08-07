@@ -3,17 +3,25 @@ import AppKit
 final class HotkeyManager {
     private var eventTap: CFMachPort?
     private var runLoopSource: CFRunLoopSource?
+    private var retryTimer: Timer?
     private(set) var currentCombo: KeyCombo = .default
     var onHotkeyPressed: (() -> Void)?
+
+    var isActive: Bool { eventTap != nil }
 
     func register(_ combo: KeyCombo) {
         currentCombo = combo
         if eventTap == nil {
             installEventTap()
         }
+        if eventTap == nil {
+            startRetryTimer()
+        }
     }
 
     func unregister() {
+        retryTimer?.invalidate()
+        retryTimer = nil
         guard let tap = eventTap else { return }
         CGEvent.tapEnable(tap: tap, enable: false)
         if let source = runLoopSource {
@@ -22,6 +30,21 @@ final class HotkeyManager {
         CFMachPortInvalidate(tap)
         eventTap = nil
         runLoopSource = nil
+    }
+
+    // Tap creation fails until Accessibility permission is granted. Rather than
+    // requiring the user to relaunch the app after granting it in System
+    // Settings, keep retrying quietly in the background until it succeeds.
+    private func startRetryTimer() {
+        guard retryTimer == nil else { return }
+        retryTimer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { [weak self] timer in
+            guard let self else { timer.invalidate(); return }
+            self.installEventTap()
+            if self.eventTap != nil {
+                timer.invalidate()
+                self.retryTimer = nil
+            }
+        }
     }
 
     // Uses an active CGEventTap (not an NSEvent monitor) so a matching hotkey
