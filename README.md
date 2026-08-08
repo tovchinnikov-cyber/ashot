@@ -1,40 +1,40 @@
 # A-Shot
 
-Нативная скриншотилка для Mac (Apple Silicon) — аналог Lightshot/Flameshot, но без Electron и без задержек. Написана на Swift + AppKit + ScreenCaptureKit.
+A native screenshot tool for Mac (Apple Silicon) — a free Lightshot/Flameshot alternative, without Electron and without lag. Built with Swift + AppKit + ScreenCaptureKit.
 
-**Бесплатно. Без телеметрии, без рекламы, без аккаунта.**
+**Free. No telemetry, no ads, no account.**
 
-## Возможности
+## Features
 
-- Глобальный хоткей (по умолчанию `⌘⇧S`, настраивается) — работает даже когда в фокусе другое приложение, включая Zoom/Teams во время звонка
-- Выделение области с изменяемыми размерами (ручки по краям)
-- Аннотации: стрелки, прямоугольники, текст
-- Копирование в буфер обмена одним кликом или `⌘C`
-- Поддержка нескольких мониторов
-- Запуск при логине (опционально)
+- Global hotkey (default `⌘⇧S`, customizable) — works even when another app is focused, including during a Zoom/Teams call
+- Resizable region selection with drag handles
+- Annotations: arrows, rectangles, text
+- One-click copy to clipboard, or `⌘C`
+- Multi-monitor support
+- Launch at login (optional)
 
-## Установка
+## Installation
 
-1. Скачайте `A-Shot-*.dmg` со страницы [Releases](../../releases)
-2. Откройте DMG, перетащите `A-Shot.app` в `Applications`
-3. При первом запуске macOS покажет предупреждение Gatekeeper («Apple не может проверить это приложение») — это ожидаемо: приложение подписано ad-hoc, а не платным Apple Developer ID. Чтобы разрешить запуск:
-   - Попробуйте открыть приложение (оно будет заблокировано)
-   - Откройте **System Settings → Privacy & Security → Security**
-   - Найдите A-Shot и нажмите **Open Anyway**
-4. При первом использовании хоткея macOS попросит разрешения **Accessibility** и **Screen Recording** — это необходимо для перехвата хоткея и захвата экрана, разрешите оба
+1. Download `A-Shot-*.dmg` from the [Releases](../../releases) page
+2. Open the DMG, drag `A-Shot.app` into `Applications`
+3. On first launch, macOS will show a Gatekeeper warning ("Apple could not verify this app") — this is expected: the app is ad-hoc signed, not signed with a paid Apple Developer ID. To allow it:
+   - Try opening the app (it will be blocked)
+   - Open **System Settings → Privacy & Security → Security**
+   - Find A-Shot and click **Open Anyway**
+4. The first time you use the hotkey, macOS will ask for **Accessibility** and **Screen Recording** permissions — both are required for hotkey interception and screen capture, allow them
 
-## Требования
+## Requirements
 
 macOS 15+ (Apple Silicon)
 
-## Сборка из исходников
+## Building from source
 
 ```
-make build      # debug-сборка
-make bundle      # release + .app с ad-hoc подписью
-make dmg         # .app + .dmg инсталлятор
+make build      # debug build
+make bundle      # release + ad-hoc signed .app
+make dmg         # .app + .dmg installer
 ```
 
-## Лицензия
+## License
 
-MIT — см. [LICENSE](LICENSE)
+MIT — see [LICENSE](LICENSE)
